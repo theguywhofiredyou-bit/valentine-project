@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
+
+body {
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+  overflow:hidden;
+}
+
+.card {
+  background:white;
+  padding:40px 30px;
+  border-radius:24px;
+  text-align:center;
+  max-width:350px;
+  width:90%;
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);
+  position:relative;
+  z-index:2;
+}
+
+h1 { font-size:1.8rem; margin-bottom:15px; color:#ff4d6d; }
+p { font-size:1rem; color:#555; margin-bottom:25px; }
+
+.buttons {
+  display:flex;
+  gap:15px;
+  justify-content:center;
+}
+
+button {
+  padding:10px 22px;
+  border:none;
+  border-radius:20px;
+  font-size:1rem;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+
+.yes-btn { background:#ff4d6d; color:white; }
+.yes-btn:hover { background:#ff2f55; transform:scale(1.05); }
+
+.no-btn { background:#eee; color:#444; position:relative; }
+.no-btn:hover { transform:translateY(-2px); }
+
+.result {
+  margin-top:20px;
+  font-size:1.2rem;
+  color:#ff4d6d;
+  display:none;
+  font-weight:600;
+}
+
+/* Floating hearts */
+.heart {
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:#ff4d6d;
+  transform:rotate(45deg);
+  animation:float 6s linear infinite;
+  opacity:0.7;
+}
+.heart::before,
+.heart::after {
+  content:"";
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:#ff4d6d;
+  border-radius:50%;
+}
+.heart::before { top:-10px; left:0; }
+.heart::after { left:-10px; top:0; }
+@keyframes float {
+  0% { transform:translateY(100vh) rotate(45deg); opacity:0; }
+  10% { opacity:0.7; }
+  100% { transform:translateY(-120vh) rotate(45deg); opacity:0; }
+}
+
+/* Slideshow */
+.slideshow {
+  display:none;
+  margin-top:20px;
+}
+.slideshow img {
+  width:260px;
+  height:auto; /* let browser adjust height */
+  max-height:280px; /* optional max height */
+  object-fit:cover;
+  border-radius:16px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.3);
+  animation:fade 1s ease-in-out;
+}
+@keyframes fade { from {opacity:0; transform:scale(0.95);} to {opacity:1; transform:scale(1);} }
+
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Will You Be My Valentine, My Fiancée? 💖</h1>
+  <p>bahalag saging basta labing karong petsa katorse</p>
+
+  <div class="slideshow" id="slideshow">
+    <img id="slideImage" src="images/maricel1.jpg" alt="Slideshow memory">
+  </div>
+
+  <div class="buttons">
+    <button class="yes-btn" onclick="sayYes()">Yes 💕</button>
+    <button class="no-btn" id="noBtn">No 🙈</button>
+  </div>
+
+  <div class="result" id="result">
+    Paliti ko pokemon happy meal ha ge buhatan bitaw tika website 🤍💖
+  </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const result = document.getElementById("result");
+const slideshow = document.getElementById("slideshow");
+const slideImage = document.getElementById("slideImage");
+
+// Put your JPG filenames here, inside "images/" folder
+const images = [
+  "images/maricel1.jpg",
+  "images/maricel4.jpg",
+  "images/maricel5.jpg",
+  "images/maricel2.jpg",
+  "images/maricel3.jpg",
+  "images/maricel6.jpg",
+  "images/maricel7.jpg",
+  "images/maricel8.jpg"
+];
+
+let currentIndex = 0;
+let slideshowInterval;
+
+function sayYes() {
+  result.style.display = "block";
+  createHearts();
+  startSlideshow();
+}
+
+function startSlideshow() {
+  slideshow.style.display = "block";
+  slideImage.src = images[currentIndex];
+
+  slideshowInterval = setInterval(() => {
+    currentIndex = (currentIndex + 1) % images.length;
+    slideImage.style.animation = "none";
+    slideImage.offsetHeight; // trigger reflow for fade
+    slideImage.style.animation = "fade 1s ease-in-out";
+    slideImage.src = images[currentIndex];
+  }, 2000); // change image every 2 seconds
+}
+
+// "No" button moves away
+noBtn.addEventListener("mouseover", () => {
+  const x = Math.random() * 200 - 100;
+  const y = Math.random() * 200 - 100;
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+});
+
+// Floating hearts
+function createHearts() {
+  for(let i=0;i<25;i++){
+    const heart=document.createElement("div");
+    heart.classList.add("heart");
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.animationDuration=3+Math.random()*4+"s";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),6000);
+  }
+}
+</script>
+</body>
+</html>
